@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}
+    Главная
+{% endblock %}
+{% block body %}
+    <h4>Example list</h4>
+{% for elem in list %}
+    <p>{{ elem }} </p>
+{% endfor %}
+{% endblock %}
