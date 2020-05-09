@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block head %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+{% block title %}
+    Главная
+{% endblock %}
+{% block body %}
+    <div id="myDiv" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0;"></div>
+{% endblock %}
+{% block script %}
+<script>
+	var data=[
+    {
+      opacity:0.8,
+      color:'rgb(300,100,200)',
+      type: 'mesh3d',
+      x: {{ x }},
+      y: {{ z }},
+      z: {{ rad }},
+    }
+    ];
+    Plotly.newPlot('myDiv', data);
+</script>
+{% endblock %}
