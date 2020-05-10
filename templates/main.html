@@ -3,8 +3,59 @@
     Главная
 {% endblock %}
 {% block body %}
-    <h4>Example list</h4>
-{% for elem in list %}
-    <p>{{ elem }} </p>
-{% endfor %}
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+    <h4>Введите параметры для вычисления радиационной модели</h4>
+    <form action="/result" method="post">
+        <label>
+            Расстояние по X от стены
+            <input type="number" name="k">
+        </label>
+        <br>
+        <label>
+            Значение длины стены - Z
+            <input type="number" name="l">
+        </label>
+        <br>
+        <label>
+            Значени высоты стены - Y
+            <input type="number" name="m">
+        </label>
+        <br>
+        <label>
+            Значение широты - X
+            <input type="number" name="n">
+        </label>
+        <br>
+        <label>
+            Расстояние до плоскости вдоль оси Y
+            <input type="number" name="y0">
+        </label>
+        <br>
+        <label>
+            Половина толщины затухания (константа, зависящая от материала стены)
+            <input type="number" name="d">
+        </label>
+        <br>
+        <label>
+            Значение мощности излучения на расстоянии r от одного элемента
+            <input type="number" name="p">
+        </label>
+        <br>
+        <label>
+            Расстояние от одного элемента стены
+            <input type="number" name="r">
+        </label>
+        <br>
+        <label>
+            Выберите нужный тип рассчета:
+            <select name="type">
+                <option value="wall">Расчет радиационного фона от стены</option>
+                <option value="room">Расчет радиационного фона в комнате</option>
+            </select>
+        </label>
+        <br><br>
+        <input type="submit" value="Посчитать">
+    </form>
 {% endblock %}
