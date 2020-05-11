@@ -3,7 +3,6 @@ from flask import Flask
 from flask import render_template
 
 from radiation_model import radiation_calculator
-from radiation_model.radiation_calculator import wall_radiation, room_radiation
 
 app = Flask(__name__)
 
@@ -13,7 +12,7 @@ def main_app():
     return render_template("main.html", error_message=flask.request.args.get("error_message"))
 
 
-@app.route('/result', methods=["POST"])
+@app.route('/list', methods=["POST"])
 def calculate_result():
     try:
         if flask.request.form["type"] == "wall":
@@ -38,15 +37,28 @@ def calculate_result():
         return flask.redirect(flask.url_for('main_app', error_message="Неверный формат вводимых данных"))
 
 
-@app.route('/image')
+@app.route('/image', methods=["POST"])
 def get_image():
-    rad_list = wall_radiation(10, 10, 13, 1, 5, 6, 1, 1)
+    if flask.request.form["type"] == "wall":
+        func = radiation_calculator.wall_radiation
+        header = "Расчет радиационного фона от стены"
+    else:
+        func = radiation_calculator.room_radiation
+        header = "Расчет радиационного фона в комнате"
+    rad_list = func(k=int(flask.request.form["k"]),
+                    l=int(flask.request.form["l"]),
+                    m=int(flask.request.form["m"]),
+                    n=int(flask.request.form["n"]),
+                    y0=int(flask.request.form["y0"]),
+                    d=int(flask.request.form["d"]),
+                    p=int(flask.request.form["p"]),
+                    r=int(flask.request.form["r"]))
     x, z, radiation = [], [], []
     for rad in rad_list:
         x.append(rad.x)
         z.append(rad.z)
         radiation.append(rad.rad)
-    return render_template('image.html', x=x, z=z, rad=radiation)
+    return render_template('image.html', x=x, z=z, rad=radiation, header=header)
 
 
 if __name__ == '__main__':

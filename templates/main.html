@@ -7,55 +7,82 @@
         <p>{{ error_message }}</p>
     {% endif %}
     <h4>Введите параметры для вычисления радиационной модели</h4>
-    <form action="/result" method="post">
-        <label>
-            Расстояние по X от стены
-            <input type="number" name="k">
-        </label>
+    <br>
+    <form action="/result" method="post" class="form-group" id="form">
+        <div class="row">
+            <div class="col-md-7"><label>Расстояние по X от стены</label></div>
+            <div class="col-md-2"><input type="number" name="k" class="form-control"></div>
+        </div>
         <br>
-        <label>
-            Значение длины стены - Z
-            <input type="number" name="l">
-        </label>
+        <div class="row">
+            <div class="col-md-7"><label>Значение длины стены - Z</label></div>
+            <div class="col-md-2"><input type="number" name="l" class="form-control"></div>
+        </div>
         <br>
-        <label>
-            Значени высоты стены - Y
-            <input type="number" name="m">
-        </label>
+        <div class="row">
+            <div class="col-md-7"><label>Значение высоты стены - Y</label></div>
+            <div class="col-md-2"><input type="number" name="m" class="form-control"></div>
+        </div>
         <br>
-        <label>
-            Значение широты - X
-            <input type="number" name="n">
-        </label>
+        <div class="row">
+            <div class="col-md-7"><label>Значение широты - X</label></div>
+            <div class="col-md-2"><input type="number" name="n" class="form-control"></div>
+        </div>
         <br>
-        <label>
-            Расстояние до плоскости вдоль оси Y
-            <input type="number" name="y0">
-        </label>
+        <div class="row">
+            <div class="col-md-7"><label>Расстояние до плоскости вдоль оси Y</label></div>
+            <div class="col-md-2"><input type="number" name="y0" class="form-control"></div>
+        </div>
         <br>
-        <label>
-            Половина толщины затухания (константа, зависящая от материала стены)
-            <input type="number" name="d">
-        </label>
+        <div class="row">
+            <div class="col-md-7"><label>Половина толщины затухания <br>(константа, зависящая от материала
+                стены)</label></div>
+            <div class="col-md-2"><input type="number" name="d" class="form-control"></div>
+        </div>
         <br>
-        <label>
-            Значение мощности излучения на расстоянии r от одного элемента
-            <input type="number" name="p">
-        </label>
+        <div class="row">
+            <div class="col-md-7"><label>Значение мощности излучения на расстоянии r от одного элемента</label></div>
+            <div class="col-md-2"><input type="number" name="p" class="form-control"></div>
+        </div>
         <br>
-        <label>
-            Расстояние от одного элемента стены
-            <input type="number" name="r">
-        </label>
+        <div class="row">
+            <div class="col-md-7"><label>Расстояние от одного элемента стены</label></div>
+            <div class="col-md-2"><input type="number" name="r" class="form-control"></div>
+        </div>
         <br>
-        <label>
-            Выберите нужный тип рассчета:
-            <select name="type">
-                <option value="wall">Расчет радиационного фона от стены</option>
-                <option value="room">Расчет радиационного фона в комнате</option>
-            </select>
-        </label>
+        <div class="row">
+            <div class="col-md-4"><label>Выберите нужный тип рассчета</label></div>
+            <div class="col-md-5">
+                <select name="type" class="form-control">
+                    <option value="wall">Расчет радиационного фона от стены</option>
+                    <option value="room">Расчет радиационного фона в комнате</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"><label>Выберите формат вывода вычислений</label></div>
+            <div class="col-md-5">
+                <select name="output" id="output" class="form-control">
+                    <option value="list" id="list">Список значений</option>
+                    <option value="image" id="image">Картинка</option>
+                </select>
+            </div>
+        </div>
         <br><br>
-        <input type="submit" value="Посчитать">
+        <input type="submit" value="Посчитать" class="btn btn-success">
     </form>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("#output").change(function () {
+                if ($("#output").val() == "image") {
+                    $("#form").prop("action", "/image")
+                } else {
+                    $("#form").prop("action", "/list")
+                }
+            });
+        });
+    </script>
 {% endblock %}
