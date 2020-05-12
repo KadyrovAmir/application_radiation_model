@@ -29,7 +29,6 @@ def calculate_result():
                         d=int(flask.request.form["d"]),
                         p=int(flask.request.form["p"]),
                         r=int(flask.request.form["r"]))
-        print(rad_list)
         output_list = []
         [output_list.append(f'x: {item.x} z: {item.z} N: {item.rad}') for item in rad_list]
         return render_template('list_result.html', list=output_list, header=header)

@@ -11,43 +11,43 @@
     <form action="/list" method="post" class="form-group" id="form">
         <div class="row">
             <div class="col-md-7"><label>Расстояние по X от стены</label></div>
-            <div class="col-md-2"><input type="number" name="k" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="k" name="k" class="form-control"></div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Значение длины стены - Z</label></div>
-            <div class="col-md-2"><input type="number" name="l" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="l" name="l" class="form-control"></div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Значение высоты стены - Y</label></div>
-            <div class="col-md-2"><input type="number" name="m" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="m" name="m" class="form-control"></div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Значение широты - X</label></div>
-            <div class="col-md-2"><input type="number" name="n" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="n" name="n" class="form-control"></div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Расстояние до плоскости вдоль оси Y</label></div>
-            <div class="col-md-2"><input type="number" name="y0" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="y0" name="y0" class="form-control"></div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Половина толщины затухания <br>(константа, зависящая от материала
                 стены)</label></div>
-            <div class="col-md-2"><input type="number" name="d" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="d" name="d" class="form-control"></div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Значение мощности излучения на расстоянии r от одного элемента</label></div>
-            <div class="col-md-2"><input type="number" name="p" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="p" name="p" class="form-control"></div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Расстояние от одного элемента стены</label></div>
-            <div class="col-md-2"><input type="number" name="r" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="r" name="r" class="form-control"></div>
         </div>
         <br>
         <div class="row">
@@ -69,8 +69,12 @@
                 </select>
             </div>
         </div>
-        <br><br>
-        <input type="submit" value="Посчитать" class="btn btn-success">
+        <br>
+        <div class="row">
+            <div class="col-md-3"><input type="button" id="generate" value="Сгенерировать значения"
+                                         class="btn btn-info"></div>
+            <div class="col-md-2"><input type="submit" value="Посчитать" class="btn btn-success"></div>
+        </div>
     </form>
 {% endblock %}
 {% block script %}
@@ -83,6 +87,25 @@
                     $("#form").prop("action", "/list")
                 }
             });
+
+            $("#generate").click(function () {
+                const max_value = 40;
+                const mean_value = 20;
+                const min_value = 1;
+                const min_d_value = 5;
+                $("#k").val(getRandomValue(mean_value, min_value));
+                $("#l").val(getRandomValue(max_value, mean_value));
+                $("#m").val(getRandomValue(max_value, mean_value));
+                $("#n").val(getRandomValue(max_value, mean_value));
+                $("#y0").val(getRandomValue(mean_value, min_value));
+                $("#d").val(getRandomValue(min_value, min_d_value));
+                $("#p").val(getRandomValue(min_value, min_d_value));
+                $("#r").val(getRandomValue(mean_value, min_value));
+            });
+
+            function getRandomValue(max, min) {
+                return Math.floor(Math.random() * (max - min)) + min;
+            }
         });
     </script>
 {% endblock %}
