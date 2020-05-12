@@ -2,9 +2,23 @@
 {% block title %}
     Список полученных значений
 {% endblock %}
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
 {% block body %}
-    <h4>{{ header }}</h4>
-{% for elem in list %}
-    <p>{{ elem }} </p>
-{% endfor %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <h4>{{ header }}</h4>
+            {% for elem in list %}
+            <p>{{ elem }} </p>
+            {% endfor %}
+        </div>
+        <div class="col-md-3" style="margin-top: 30px">
+            <form action="{{url_for('download_data')}}" method="get">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i> Скачать</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
