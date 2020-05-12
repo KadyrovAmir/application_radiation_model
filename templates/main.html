@@ -89,8 +89,8 @@
             });
 
             $("#generate").click(function () {
-                const max_value = 40;
-                const mean_value = 20;
+                const max_value = 30;
+                const mean_value = 10;
                 const min_value = 1;
                 const min_d_value = 5;
                 $("#k").val(getRandomValue(mean_value, min_value));
@@ -98,13 +98,13 @@
                 $("#m").val(getRandomValue(max_value, mean_value));
                 $("#n").val(getRandomValue(max_value, mean_value));
                 $("#y0").val(getRandomValue(mean_value, min_value));
-                $("#d").val(getRandomValue(min_value, min_d_value));
-                $("#p").val(getRandomValue(min_value, min_d_value));
+                $("#d").val(getRandomValue(min_d_value, min_value));
+                $("#p").val(getRandomValue(min_d_value, min_value));
                 $("#r").val(getRandomValue(mean_value, min_value));
             });
 
             function getRandomValue(max, min) {
-                return Math.floor(Math.random() * (max - min)) + min;
+                return Math.floor(Math.random() * (max - min)) + min + 1;
             }
         });
     </script>

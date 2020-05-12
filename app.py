@@ -42,6 +42,7 @@ def get_image():
         func = radiation_calculator.wall_radiation
         header = "Расчет радиационного фона от стены"
     else:
+        print("heh!")
         func = radiation_calculator.room_radiation
         header = "Расчет радиационного фона в комнате"
     rad_list = func(k=int(flask.request.form["k"]),
@@ -54,6 +55,7 @@ def get_image():
                     r=int(flask.request.form["r"]))
     x, z, radiation = [], [], []
     for rad in rad_list:
+        print(1)
         x.append(rad.x)
         z.append(rad.z)
         radiation.append(rad.rad)
