@@ -93,18 +93,20 @@
                 const mean_value = 10;
                 const min_value = 1;
                 const min_d_value = 5;
-                $("#k").val(getRandomValue(mean_value, min_value));
-                $("#l").val(getRandomValue(max_value, mean_value));
-                $("#m").val(getRandomValue(max_value, mean_value));
-                $("#n").val(getRandomValue(max_value, mean_value));
-                $("#y0").val(getRandomValue(mean_value, min_value));
+                var k = getRandomValue(max_value, mean_value);
+                var l = getRandomValue(max_value, mean_value);
+                $("#k").val(k);
+                $("#l").val(l);
+                $("#m").val(getRandomValue(Math.floor(Math.min(k, l) / 2), min_value));
+                $("#n").val(getRandomValue(Math.floor(Math.min(k, l) / 2), min_value));
+                $("#y0").val(getRandomValue(min_d_value, min_value));
                 $("#d").val(getRandomValue(min_d_value, min_value));
                 $("#p").val(getRandomValue(min_d_value, min_value));
-                $("#r").val(getRandomValue(mean_value, min_value));
+                $("#r").val(getRandomValue(min_d_value, min_value));
             });
 
             function getRandomValue(max, min) {
-                return Math.floor(Math.random() * (max - min)) + min + 1;
+                return Math.floor(Math.random() * (max + 1 - min)) + min;
             }
         });
     </script>
