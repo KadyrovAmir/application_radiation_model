@@ -1,13 +1,18 @@
-import flask, csv, sys, os
+import flask, csv, sys, os, redis
 from datetime import datetime
 from os.path import join, dirname, realpath
 from flask import Flask, send_file, after_this_request
 from flask import render_template
+from flask_session import Session
 
 from radiation_model import radiation_calculator
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_REDIS'] = redis.from_url('redis://127.0.0.1:6379')
 
+sess = Session()
+sess.init_app(app)
 
 @app.route('/', methods=["GET"])
 def main_app():
