@@ -21,7 +21,7 @@ def main_app():
 
 @app.route('/list', methods=["POST"])
 def calculate_result():
-    # try:
+    try:
         if flask.request.form["type"] == "wall":
             func = radiation_calculator.wall_radiation
             header = "Расчет радиационного фона от стены"
@@ -40,8 +40,8 @@ def calculate_result():
         output_list = []
         [output_list.append(f'x: {item.x} z: {item.z} N: {item.rad}') for item in rad_list]
         return render_template('list_result.html', list=output_list, header=header)
-    # except Exception:
-    #     return flask.redirect(flask.url_for('main_app', error_message="Неверный формат вводимых данных"))
+    except Exception:
+        return flask.redirect(flask.url_for('main_app', error_message="Неверный формат вводимых данных"))
 
 
 @app.route('/image', methods=["POST"])
@@ -60,12 +60,15 @@ def get_image():
                     d=int(flask.request.form["d"]),
                     p=int(flask.request.form["p"]),
                     r=int(flask.request.form["r"]))
-    x, z, radiation = [], [], []
+    z, radiation = [], []
     for rad in rad_list:
-        x.append(rad.x)
         z.append(rad.z)
         radiation.append(rad.rad)
-    return render_template('image.html', x=x, z=z, rad=radiation, header=header)
+    z = z[-1]
+    rad_array = []
+    for i in range(0, len(radiation), z):
+        rad_array.append(radiation[i:i+z])
+    return render_template('image.html', rad=rad_array, header=header)
 
 
 def insert_data_in_session(data):
