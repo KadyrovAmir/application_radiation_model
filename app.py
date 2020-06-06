@@ -14,9 +14,18 @@ app.config['SESSION_REDIS'] = redis.from_url('redis://127.0.0.1:6379')
 sess = Session()
 sess.init_app(app)
 
+
 @app.route('/', methods=["GET"])
 def main_app():
-    return render_template("main.html", error_message=flask.request.args.get("error_message"))
+    return render_template("main.html", error_message=flask.request.args.get("error_message"),
+                           type=flask.request.args.get("type"), k=flask.request.args.get("k"), l=flask.request.args.get("l"),
+                           m=flask.request.args.get("m"), n=flask.request.args.get("n"), y0=flask.request.args.get("y0"),
+                           d=flask.request.args.get("d"), p=flask.request.args.get("p"), r=flask.request.args.get("r"))
+
+
+@app.route('/list', methods=["GET"])
+def hmm():
+    pass
 
 
 @app.route('/list', methods=["POST"])
@@ -28,6 +37,14 @@ def calculate_result():
         else:
             func = radiation_calculator.room_radiation
             header = "Расчет радиационного фона в комнате"
+        # values_dict = {'k': flask.request.form["k"],
+        #                 'l': flask.request.form["l"],
+        #                 'm': flask.request.form["m"],
+        #                 'n': flask.request.form["n"],
+        #                 'y0': flask.request.form["y0"],
+        #                 'd': flask.request.form["d"],
+        #                 'p': flask.request.form["p"],
+        #                 'r': flask.request.form["r"]}
         rad_list = func(k=int(flask.request.form["k"]),
                         l=int(flask.request.form["l"]),
                         m=int(flask.request.form["m"]),
@@ -40,8 +57,28 @@ def calculate_result():
         output_list = []
         [output_list.append(f'x: {item.x} z: {item.z} N: {item.rad}') for item in rad_list]
         return render_template('list_result.html', list=output_list, header=header)
-    except Exception:
-        return flask.redirect(flask.url_for('main_app', error_message="Неверный формат вводимых данных"))
+    except ValueError:
+        return flask.redirect(flask.url_for('main_app', error_message="Неверный формат вводимых данных", type='value',
+                                            k=flask.request.form["k"], l=flask.request.form["l"],
+                                            m=flask.request.form["m"],
+                                            n=flask.request.form["n"], y0=flask.request.form["y0"],
+                                            d=flask.request.form["d"],
+                                            p=flask.request.form["p"], r=flask.request.form["r"]))
+    except Exception as e:
+        if hasattr(e, 'message'):
+            return flask.redirect(flask.url_for('main_app', error_message=e.message, type='field',
+                                                k=flask.request.form["k"], l=flask.request.form["l"],
+                                                m=flask.request.form["m"],
+                                                n=flask.request.form["n"], y0=flask.request.form["y0"],
+                                                d=flask.request.form["d"],
+                                                p=flask.request.form["p"], r=flask.request.form["r"]))
+        else:
+            return flask.redirect(
+                flask.url_for('main_app', error_message="Внутренняя ошибка библиотеки, спрашивайте с них: " + e,
+                              type='inner',
+                              k=flask.request.form["k"], l=flask.request.form["l"], m=flask.request.form["m"],
+                              n=flask.request.form["n"], y0=flask.request.form["y0"], d=flask.request.form["d"],
+                              p=flask.request.form["p"], r=flask.request.form["r"]))
 
 
 @app.route('/image', methods=["POST"])
@@ -67,7 +104,7 @@ def get_image():
     z = z[-1]
     rad_array = []
     for i in range(0, len(radiation), z):
-        rad_array.append(radiation[i:i+z])
+        rad_array.append(radiation[i:i + z])
     return render_template('image.html', rad=rad_array, header=header)
 
 
@@ -87,7 +124,7 @@ def download_data():
     file_name = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
     absolute_file_name = join(dirname(realpath(__file__)), f"tmp\\{file_name}")
     with open(absolute_file_name, "w+", newline='') as file:
-        csv_writer = csv.writer(file, delimiter=',',)
+        csv_writer = csv.writer(file, delimiter=',', )
         csv_writer.writerow(["x", "z", "N"])
         for x, z, rad in zip(flask.session["x"], flask.session["z"], flask.session["r"]):
             csv_writer.writerow([x, z, rad])

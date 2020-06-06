@@ -3,51 +3,78 @@
     Главная
 {% endblock %}
 {% block body %}
-    {% if error_message %}
-        <p>{{ error_message }}</p>
+    {% if error_message and type == 'value' %}
+        <p style="color: red">{{ error_message }}</p>
+    {% endif %}
+    {% if error_message and type == 'inner' %}
+        <p style="color: red; font-size: 60px">{{ error_message }}</p>
     {% endif %}
     <h4>Введите параметры для вычисления радиационной модели</h4>
     <br>
     <form action="/list" method="post" class="form-group" id="form">
         <div class="row">
             <div class="col-md-7"><label>Расстояние по X от стены</label></div>
-            <div class="col-md-2"><input type="number" id="k" name="k" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="k" name="k" class="form-control" value="{{ k if k else '' }}"></div>
+            {% if error_message and error_message.startswith('k ') %}
+                <p style="color: red">{{ error_message }}</p>
+            {% endif %}
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Значение длины стены - Z</label></div>
-            <div class="col-md-2"><input type="number" id="l" name="l" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="l" name="l" class="form-control" value="{{ l if l else '' }}"></div>
+            {% if error_message and error_message.startswith('l ') %}
+                <p style="color: red">{{ error_message }}</p>
+            {% endif %}
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Значение высоты стены - Y</label></div>
-            <div class="col-md-2"><input type="number" id="m" name="m" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="m" name="m" class="form-control" value="{{ m if m else '' }}"></div>
+            {% if error_message and error_message.startswith('m ') %}
+                <p style="color: red">{{ error_message }}</p>
+            {% endif %}
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Значение широты - X</label></div>
-            <div class="col-md-2"><input type="number" id="n" name="n" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="n" name="n" class="form-control" value="{{ n if n else '' }}"></div>
+            {% if error_message and error_message.startswith('n ') %}
+                <p style="color: red">{{ error_message }}</p>
+            {% endif %}
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Расстояние до плоскости вдоль оси Y</label></div>
-            <div class="col-md-2"><input type="number" id="y0" name="y0" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="y0" name="y0" class="form-control" value="{{ y0 if y0 else '' }}"></div>
+            {% if error_message and error_message.startswith('y0 ') %}
+                <p style="color: red">{{ error_message }}</p>
+            {% endif %}
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Половина толщины затухания <br>(константа, зависящая от материала
                 стены)</label></div>
-            <div class="col-md-2"><input type="number" id="d" name="d" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="d" name="d" class="form-control" value="{{ d if d else '' }}"></div>
+            {% if error_message and error_message.startswith('d ') %}
+                <p style="color: red">{{ error_message }}</p>
+            {% endif %}
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Значение мощности излучения на расстоянии r от одного элемента</label></div>
-            <div class="col-md-2"><input type="number" id="p" name="p" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="p" name="p" class="form-control" value="{{ p if p else '' }}"></div>
+            {% if error_message and error_message.startswith('p ') %}
+                <p style="color: red">{{ error_message }}</p>
+            {% endif %}
         </div>
         <br>
         <div class="row">
             <div class="col-md-7"><label>Расстояние от одного элемента стены</label></div>
-            <div class="col-md-2"><input type="number" id="r" name="r" class="form-control"></div>
+            <div class="col-md-2"><input type="number" id="r" name="r" class="form-control" value="{{ r if r else '' }}"></div>
+            {% if error_message and error_message.startswith('r ') %}
+                <p style="color: red">{{ error_message }}</p>
+            {% endif %}
         </div>
         <br>
         <div class="row">
