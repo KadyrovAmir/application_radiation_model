@@ -55,7 +55,7 @@ def calculate_result():
                         r=int(flask.request.form["r"]))
         insert_data_in_session(rad_list)
         output_list = []
-        [output_list.append(f'x: {item.x} z: {item.z} N: {item.rad}') for item in rad_list]
+        [output_list.append({'x': item.x, 'z': item.z, 'rad': item.rad}) for item in rad_list]
         return render_template('list_result.html', list=output_list, header=header)
     except ValueError:
         return flask.redirect(flask.url_for('main_app', error_message="Неверный формат вводимых данных", type='value',

@@ -130,3 +130,6 @@ dmypy.json
 db.sqlite3
 radiation_model/
 .idea/
+
+# tmp files
+.tmp

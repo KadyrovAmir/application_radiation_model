@@ -1,24 +1,38 @@
 {% extends 'base.html' %}
 {% block title %}
-    Список полученных значений
+Список полученных значений
 {% endblock %}
 {% block head %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            <h4>{{ header }}</h4>
+<div class="row">
+    <div class="col-md-9">
+        <h4 style="text-align: center; font-family: 'Trebuchet MS';">{{ header }}</h4>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">X</th>
+                <th scope="col">Z</th>
+                <th scope="col">Радиация</th>
+            </tr>
+            </thead>
+            <tbody>
             {% for elem in list %}
-            <p>{{ elem }} </p>
+            <tr>
+                <td>{{ elem['x'] }}</td>
+                <td>{{ elem['z'] }}</td>
+                <td>{{ elem['rad'] }}</td>
+            </tr>
             {% endfor %}
-        </div>
-        <div class="col-md-3" style="margin-top: 30px">
-            <form action="{{url_for('download_data')}}" method="get">
-                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i> Скачать</button>
-            </form>
-        </div>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-md-3" style="margin-top: 40px; text-align: center">
+        <form action="{{url_for('download_data')}}" method="get">
+            <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i> Скачать</button>
+        </form>
     </div>
 </div>
 {% endblock %}
